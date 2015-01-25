@@ -89,7 +89,6 @@ app.use(function(err, request, response, next) {
 		response.status(err.status).send({error: err.message});
 	} else {
 		app.get('logger').error('Fatal error: %s', err.message, {error: err});
-		metricsLogger.logMetric('Errors');
 		response.status(500).send({error: 'Fail whale'});
 	}
 });

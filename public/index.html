@@ -8,7 +8,7 @@
         #console {
             font-family: courier, monospace;
             color: #fff;
-            width:750px;
+            width:1024px;
             margin-left:auto;
             margin-right:auto;
             margin-top:100px;
@@ -46,9 +46,11 @@
     sockjs.onmessage = function(m) {
         try {
             var message = JSON.parse(m.data);
-            var consoleEntry = $('<p>').text(message.type);
+            var consoleEntry = $('<p>');
+            consoleEntry.append($('<span>').attr('class', 'blue').text(new Date(message.timestamp).toISOString() + ' '));
+            consoleEntry.append($('<span>').text(message.type));
             if (message.data && message.data.userID) {
-                consoleEntry.append($('<span>').attr('class', 'blue').text(' (' + message.data.userID + ')'));
+                consoleEntry.append($('<span>').text(' by userID ' + message.data.userID));
             }
             div.append(consoleEntry);
         } catch (e) {

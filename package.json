@@ -1,22 +1,22 @@
 {
   "name": "notificare-live-api-console",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "engines": {
-    "node": "~0.10.24",
-    "npm":  "^1.4.3"
+    "node": "^4.1.0",
+    "npm":  "^2.14.3"
   },
   "dependencies": {
-    "debug": "^1.0.4",
-    "express": "^4.8.0",
-    "body-parser": "^1.6.0",
-    "morgan": "^1.2.2",
-    "winston":"^0.8.1",
-    "consolidate": "^0.10.0",
-    "handlebars": "^2.0.0",
-    "async":"^0.9.0",
-    "minimist": "^1.1.0",
+    "debug": "^2.6.8",
+    "express": "^4.15.3",
+    "body-parser": "^1.17.2",
+    "morgan": "^1.8.2",
+    "winston":"^2.3.1",
+    "consolidate": "~0.14.5",
+    "handlebars": "^4.0.10",
+    "async":"^1.4.2",
+    "minimist": "^1.2.0",
     "notificare":"~0.0.8",
-    "sockjs": "~0.3.12"
+    "sockjs": "~0.3.18"
   }
 }

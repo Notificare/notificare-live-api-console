@@ -6,25 +6,23 @@
  */
 
 // Imports
-var express = require('express');
+const express = require('express');
 /**
  * Constructor
  * @returns {Status}
  */
-var Status = module.exports = function() {
-};
-
-Status.prototype = {
+module.exports = class Status {
+	constructor() {}
 	/**
 	 * Attach routes to main Express app
 	 * @param app {Express} The main app
 	 * @returns {Function} Routing handler
 	 */
-	attach: function(app) {
+	attach(app) {
 		this.app = app;
 		return express.Router()
 			.get('/', this.handleIndex.bind(this));
-	},
+	}
 	/**
 	 * Middleware
 	 * 
@@ -33,7 +31,7 @@ Status.prototype = {
 	 * @param response {http.ServerResponse} 
 	 * @param next {Function} next middleware callback
 	 */
-	handleIndex: function(request, response, next) {
+	handleIndex(request, response, next) {
 		response.status(200).send({
 			status: 'ok'
 		});

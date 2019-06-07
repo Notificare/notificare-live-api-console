@@ -6,33 +6,32 @@
  */
 
 // Live
-var express = require('express'),
+const express = require('express'),
     LiveApi = require('notificare').LiveApi;
 
 /**
  * Constructor
- * @returns {Import}
+ * @returns {Live}
  */
-var Live = module.exports = function() {
-};
+module.exports = class Live {
 
-Live.prototype = {
+    constructor() {}
 	/**
 	 * Attach routes to main Express app
 	 * @param app {Express} The main app
 	 * @returns {Function} Routing handler
 	 */
-	attach: function(app) {
+	attach(app) {
 		this.app = app;
         this.logger = app.get('logger') || console;
 
-        var liveApiConfig = app.get('liveApiConfig');
+        const liveApiConfig = app.get('liveApiConfig');
         this.httpGateway = new LiveApi(liveApiConfig.privateKey, liveApiConfig.publicKey).httpGateway;
 
         return express.Router()
             .post('/', this.handlePayload.bind(this))
             .get('/', this.handleVerify.bind(this));
-	},
+	}
     /**
      * Middleware
      *
@@ -41,22 +40,24 @@ Live.prototype = {
      * @param response {http.ServerResponse}
      * @param next {Function} next middleware callback
      */
-    handlePayload: function(request, response, next) {
+    handlePayload(request, response, next) {
         if (!request.header('x-notificare-public-key') || !request.header('x-notificare-signature')) {
             response.status(400).send({message: 'missing parameters'});
         } else {
             try {
                 if (!this.httpGateway.validate(request.header('x-notificare-public-key'), request.body, request.header('x-notificare-signature'))) {
+                    debug('invalid');
                     response.status(400).send({error: 'invalid signature'});
                 } else {
                     this.app.get('messageQueue').write(request.body);
                     response.status(200).send({message: 'message received'});
                 }
             } catch (err) {
+                debug(err);
                 response.status(400).send({error: err.message});
             }
         }
-    },
+    }
     /**
      * Middleware
      *
@@ -65,7 +66,7 @@ Live.prototype = {
      * @param response
      * @param next
      */
-    handleVerify: function(request, response, next) {
+    handleVerify(request, response, next) {
         if (!request.header('x-notificare-public-key') || !request.query.challenge) {
             response.status(400).send({message: 'missing parameters'});
         } else {

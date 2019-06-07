@@ -4,11 +4,10 @@
  */
 
 // ## Imports
-var http = require('http'),
+const http = require('http'),
     express = require('express'),
 	bodyParser = require('body-parser'),
 	morgan = require('morgan'),
-	engines = require('consolidate'),
 	Resource = require('./resources'),
 	winston = require('winston'),
 	sockjs = require('sockjs'),
@@ -26,21 +25,19 @@ function reopenLogfiles() {
         fs.closeSync(2);
         fs.openSync(args.l, 'a+');
     }
-};
+}
 reopenLogfiles();
 
 //Create an ExpressJS app
-var app = express();
-app.engine('hbs', engines.handlebars);
-app.set('view engine', 'hbs');
+const app = express();
 
 app.set('liveApiConfig', {
 	privateKey: process.env.PRIVATE_KEY,
 	publicKey: process.env.PUBLIC_KEY
 });
 
-var env = process.env.NODE_ENV || 'development';
-if ('development' == env) {
+const env = process.env.NODE_ENV || 'development';
+if ('development' === env) {
 	/**
 	 * local environment configuration
 	 */
@@ -97,22 +94,22 @@ app.use(function(err, request, response, next) {
  * Log startup info through the current logger mechanism
  * @type {Server}
  */
-var logger = app.get('logger');
+const logger = app.get('logger');
 
 /**
  * Message queue to send data to that will go to sockjs connections
  * @type {Stream.PassThrough}
  */
-var messageQueue = new streams.PassThrough({objectMode: true});
+const messageQueue = new streams.PassThrough({objectMode: true});
 app.set('messageQueue', messageQueue);
 
 /**
  * Start listening for incoming requests
  */
 // Ready to go
-var port = process.env.PORT || 3014;
-var backlog = process.env.BACKLOG || 2048;
-var server = http.createServer(app);
+const port = process.env.PORT || 3014;
+const backlog = process.env.BACKLOG || 2048;
+const server = http.createServer(app);
 server.listen(port, backlog, function() {
 	logger.info("Listening on %s", port);
 });
@@ -124,9 +121,8 @@ server.on('close', function() {
 	process.exit(0);
 });
 
-var sockJS = sockjs.createServer({ sockjs_url: 'http://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js' });
+const sockJS = sockjs.createServer({ sockjs_url: 'https://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js' });
 sockJS.on('connection', function(connection) {
-
 	messageQueue.pipe(connection);
 	connection.on('close', function() {});
 });
@@ -144,7 +140,7 @@ process.on('SIGHUP', function() {
 
 // When running in cluster, master will send a message to reopen logfiles
 process.on('message', function(message) {
-	if (message == 'reopenLogfiles') {
+	if (message === 'reopenLogfiles') {
 		logger.info('Got reopenLogfiles message from master, reopening logfiles');
 		reopenLogfiles();
 	}

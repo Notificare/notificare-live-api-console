@@ -13,6 +13,7 @@ const http = require('http'),
 	sockjs = require('sockjs'),
 	streams = require('stream'),
 	fs = require('fs'),
+	util = require('util'),
 	args = require('minimist')(process.argv.slice(2));
 
 /**
@@ -42,13 +43,20 @@ if ('development' === env) {
 	 * local environment configuration
 	 */
 	app.set('baseUrl', process.env.BASE_URL || 'http://localhost:3006');
-	app.set('logger', new (winston.Logger)({
-		transports: [new (winston.transports.Console)({
-			timestamp: Date, 
-			colorize: true, 
-			level: 'debug',
-			handleExceptions: true
-		})]
+	app.set('logger', winston.createLogger({
+		transports: [
+			new winston.transports.Console({
+				level: 'debug',
+				handleExceptions: true,
+				format: winston.format.combine(
+					winston.format.splat(),
+					winston.format.metadata(),
+					winston.format.timestamp({format: Date}),
+					winston.format.colorize(),
+					winston.format.printf(info => `${info.timestamp} - ${info.level}: ${info.message} ${util.format(info.metadata)}`)
+				)
+			})
+		]
 	}));
 } else {
 	/**
@@ -56,13 +64,19 @@ if ('development' === env) {
 	 */
 	app.enable('trust proxy');
     app.set('baseUrl', process.env.BASE_URL || 'https://push.notifica.re');
-	app.set('logger', new (winston.Logger)({
-		transports: [new (winston.transports.Console)({
-			timestamp: Date, 
-			colorize: false, 
-			level: 'info',
-			handleExceptions: true
-		})]
+	app.set('logger', winston.createLogger({
+		transports: [
+			new winston.transports.Console({
+				level: 'info',
+				handleExceptions: true,
+				format: winston.format.combine(
+					winston.format.splat(),
+					winston.format.metadata(),
+					winston.format.timestamp({format: Date}),
+					winston.format.printf(info => `${info.timestamp} - ${info.level}: ${info.message} ${util.format(info.metadata)}`)
+				)
+			})
+		]
 	}));
 }
 

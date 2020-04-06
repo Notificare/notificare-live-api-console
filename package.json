@@ -1,19 +1,19 @@
 {
   "name": "notificare-live-api-console",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "engines": {
-    "node": "^8.15.0",
-    "npm": "^6.8.0"
+    "node": "^10.19.0",
+    "npm": "^6.13.4"
   },
   "dependencies": {
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "body-parser": "^1.19.0",
-    "morgan": "^1.9.1",
+    "morgan": "^1.10.0",
     "winston": "^3.2.1",
-    "minimist": "^1.2.3",
-    "notificare": "~0.1.0",
-    "sockjs": "~0.3.19"
+    "minimist": "^1.2.5",
+    "notificare-live-api-node": "1.0.0",
+    "sockjs": "~0.3.20"
   }
 }

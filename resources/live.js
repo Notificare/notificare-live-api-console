@@ -7,7 +7,7 @@
 
 // Live
 const express = require('express'),
-    LiveApi = require('notificare').LiveApi;
+    LiveApi = require('notificare-live-api-node').LiveApi;
 
 /**
  * Constructor

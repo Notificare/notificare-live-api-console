@@ -1,6 +1,6 @@
 {
   "name": "notificare-live-api-console",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "engines": {
     "node": "^10.19.0",

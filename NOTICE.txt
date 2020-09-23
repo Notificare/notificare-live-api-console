@@ -1,5 +1,5 @@
 Notificare Live API SDK for NodeJS
-Copyright 2015 Notificare B.V. All Rights Reserved.
+Copyright 2020 Notificare B.V. All Rights Reserved.
 
 This product includes software developed by
-Notificare B.V. (http://notifica.re/).
+Notificare B.V. (http://notificare.com).

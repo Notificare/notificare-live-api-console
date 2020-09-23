@@ -1,0 +1,25 @@
+{
+  "env": {
+    "node": true,
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "mocha": true
+  },
+  "extends": [
+    "standard",
+    "plugin:prettier/recommended",
+    "plugin:mocha/recommended",
+    "prettier",
+    "prettier/standard"
+  ],
+  "plugins": ["standard", "prettier", "mocha"],
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "rules": {
+    "mocha/no-skipped-tests": "error",
+    "mocha/no-exclusive-tests": "error",
+    "prettier/prettier": "error"
+  }
+}

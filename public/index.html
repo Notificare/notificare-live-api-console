@@ -1,61 +1,73 @@
 <html>
-<head>
+  <head>
     <title>Notificare Live API Console</title>
     <style type="text/css">
-        body {
-            background-color: #000
-        }
-        #console {
-            font-family: courier, monospace;
-            color: #fff;
-            width:1024px;
-            margin-left:auto;
-            margin-right:auto;
-            margin-top:100px;
-            font-size:14px;
-        }
-        a {
-            color: #0bc;
-            text-decoration: none;
-        }
-        .green {
-            color: #0f0;
-        }
-        .blue {
-            color: #0bc;
-        }
-        .red {
-            color: #ff0096;
-        }
+      body {
+        background-color: #000;
+      }
+      #console {
+        font-family: courier, monospace;
+        color: #fff;
+        width: 1024px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 100px;
+        font-size: 14px;
+      }
+      a {
+        color: #0bc;
+        text-decoration: none;
+      }
+      .green {
+        color: #0f0;
+      }
+      .blue {
+        color: #0bc;
+      }
+      .red {
+        color: #ff0096;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="console"></div>
-</body>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script type="text/javascript">
-    var sockjs = new SockJS('/sockjs');
-    var div  = $('#console');
-    sockjs.onopen = function() {
-        div.append($('<p>').attr('class', 'green').text('socket opened'));
+  </body>
+  <script
+    type="text/javascript"
+    src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="//cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"
+  ></script>
+  <script type="text/javascript">
+    var sockjs = new SockJS("/sockjs");
+    var div = $("#console");
+    sockjs.onopen = function () {
+      div.append($("<p>").attr("class", "green").text("socket opened"));
     };
-    sockjs.onclose = function() {
-        div.append($('<p>').attr('class', 'red').text('socket closed'));
+    sockjs.onclose = function () {
+      div.append($("<p>").attr("class", "red").text("socket closed"));
     };
-    sockjs.onmessage = function(m) {
-        try {
-            var message = JSON.parse(m.data);
-            var consoleEntry = $('<p>');
-            consoleEntry.append($('<span>').attr('class', 'blue').text(new Date(message.timestamp).toISOString() + ' '));
-            consoleEntry.append($('<span>').text(message.type));
-            if (message.data && message.data.userID) {
-                consoleEntry.append($('<span>').text(' by userID ' + message.data.userID));
-            }
-            div.append(consoleEntry);
-        } catch (e) {
-            div.append($('<p>').attr('class', 'red').text('invalid message'));
+    sockjs.onmessage = function (m) {
+      try {
+        var message = JSON.parse(m.data);
+        var consoleEntry = $("<p>");
+        consoleEntry.append(
+          $("<span>")
+            .attr("class", "blue")
+            .text(new Date(message.timestamp).toISOString() + " ")
+        );
+        consoleEntry.append($("<span>").text(message.type));
+        if (message.data && message.data.userID) {
+          consoleEntry.append(
+            $("<span>").text(" by userID " + message.data.userID)
+          );
         }
+        div.append(consoleEntry);
+      } catch (e) {
+        div.append($("<p>").attr("class", "red").text("invalid message"));
+      }
     };
-</script>
+  </script>
 </html>

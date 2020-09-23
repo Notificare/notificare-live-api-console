@@ -2,7 +2,7 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../index");
 
-chai.should();
+const expect = chai.expect;
 chai.use(chaiHttp);
 
 describe("Status API", function () {
@@ -12,10 +12,10 @@ describe("Status API", function () {
         .request(server)
         .get("/status")
         .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a("object");
-          res.body.should.have.property("status");
-          res.body.should.have.property("status").eq("ok");
+          expect(res).to.have.status(200);
+          expect(res).to.be.json;
+          expect(res.body).to.have.property("status");
+          expect(res.body).to.have.property("status").eq("ok");
           done(err);
         });
     });

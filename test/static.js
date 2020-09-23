@@ -13,6 +13,7 @@ describe("Static file server", function () {
         .get("/index.html")
         .end((err, res) => {
           expect(res).to.have.status(200);
+          expect(res).to.be.html;
           done(err);
         });
     });

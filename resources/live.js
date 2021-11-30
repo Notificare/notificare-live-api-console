@@ -6,8 +6,8 @@
  */
 
 // Live
-const express = require("express");
-const LiveApi = require("notificare-live-api-node").LiveApi;
+const express = require('express')
+const LiveApi = require('notificare-live-api-node').LiveApi
 
 /**
  * Constructor
@@ -20,19 +20,19 @@ module.exports = class Live {
    * @returns {Function} Routing handler
    */
   attach(app) {
-    this.app = app;
-    this.logger = app.get("logger") || console;
+    this.app = app
+    this.logger = app.get('logger') || console
 
-    const liveApiConfig = app.get("liveApiConfig");
+    const liveApiConfig = app.get('liveApiConfig')
     this.httpGateway = new LiveApi(
       liveApiConfig.privateKey,
       liveApiConfig.publicKey
-    ).httpGateway;
+    ).httpGateway
 
     return express
       .Router()
-      .post("/", this.handlePayload.bind(this))
-      .get("/", this.handleVerify.bind(this));
+      .post('/', this.handlePayload.bind(this))
+      .get('/', this.handleVerify.bind(this))
   }
 
   /**
@@ -45,26 +45,26 @@ module.exports = class Live {
    */
   handlePayload(request, response, next) {
     if (
-      !request.header("x-notificare-public-key") ||
-      !request.header("x-notificare-signature")
+      !request.header('x-notificare-public-key') ||
+      !request.header('x-notificare-signature')
     ) {
-      response.status(400).send({ message: "missing parameters" });
+      response.status(400).send({ message: 'missing parameters' })
     } else {
       try {
         if (
           !this.httpGateway.validate(
-            request.header("x-notificare-public-key"),
+            request.header('x-notificare-public-key'),
             request.body,
-            request.header("x-notificare-signature")
+            request.header('x-notificare-signature')
           )
         ) {
-          response.status(400).send({ error: "invalid signature" });
+          response.status(400).send({ error: 'invalid signature' })
         } else {
-          this.app.get("messageQueue").write(request.body);
-          response.status(200).send({ message: "message received" });
+          this.app.get('messageQueue').write(request.body)
+          response.status(200).send({ message: 'message received' })
         }
       } catch (err) {
-        response.status(400).send({ error: err.message });
+        response.status(400).send({ error: err.message })
       }
     }
   }
@@ -79,23 +79,23 @@ module.exports = class Live {
    */
   handleVerify(request, response, next) {
     if (
-      !request.header("x-notificare-public-key") ||
+      !request.header('x-notificare-public-key') ||
       !request.query.challenge
     ) {
-      response.status(400).send({ message: "missing parameters" });
+      response.status(400).send({ message: 'missing parameters' })
     } else {
       try {
         response
           .status(200)
           .send(
             this.httpGateway.verify(
-              request.header("x-notificare-public-key"),
+              request.header('x-notificare-public-key'),
               request.query.challenge
             )
-          );
+          )
       } catch (err) {
-        response.status(400).send({ error: err.message });
+        response.status(400).send({ error: err.message })
       }
     }
   }
-};
+}

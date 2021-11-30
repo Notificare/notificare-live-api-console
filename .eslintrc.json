@@ -7,15 +7,12 @@
     "mocha": true
   },
   "extends": [
-    "standard",
-    "plugin:prettier/recommended",
     "plugin:mocha/recommended",
     "plugin:chai-friendly/recommended",
     "plugin:chai-expect/recommended",
-    "prettier",
-    "prettier/standard"
+    "plugin:prettier/recommended"
   ],
-  "plugins": ["standard", "prettier", "mocha", "chai-friendly", "chai-expect"],
+  "plugins": ["mocha", "chai-friendly", "chai-expect"],
   "parserOptions": {
     "ecmaVersion": 2018
   },

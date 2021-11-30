@@ -6,7 +6,7 @@
  */
 
 // Imports
-const express = require("express");
+const express = require('express')
 /**
  * Constructor
  * @returns {Status}
@@ -18,8 +18,8 @@ module.exports = class Status {
    * @returns {Function} Routing handler
    */
   attach(app) {
-    this.app = app;
-    return express.Router().get("/", this.handleIndex.bind(this));
+    this.app = app
+    return express.Router().get('/', this.handleIndex.bind(this))
   }
 
   /**
@@ -32,7 +32,7 @@ module.exports = class Status {
    */
   handleIndex(request, response, next) {
     response.status(200).send({
-      status: "ok",
-    });
+      status: 'ok',
+    })
   }
-};
+}

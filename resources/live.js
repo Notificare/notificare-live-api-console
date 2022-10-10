@@ -5,15 +5,14 @@
  *	@version 0.1
  */
 
-// Live
-const express = require('express')
-const LiveApi = require('notificare-live-api-node').LiveApi
+import express from 'express'
+import { LiveApi } from 'notificare-live-api-node'
 
 /**
  * Constructor
  * @returns {Live}
  */
-module.exports = class Live {
+export default class Live {
   /**
    * Attach routes to main Express app
    * @param app {Express} The main app

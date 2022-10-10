@@ -2,8 +2,7 @@
   "env": {
     "node": true,
     "browser": true,
-    "commonjs": true,
-    "es6": true,
+    "es2021": true,
     "mocha": true
   },
   "extends": [
@@ -14,7 +13,7 @@
   ],
   "plugins": ["mocha", "chai-friendly", "chai-expect"],
   "parserOptions": {
-    "ecmaVersion": 2018
+    "sourceType": "module"
   },
   "rules": {
     "prettier/prettier": "error"

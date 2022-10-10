@@ -1,7 +1,10 @@
 /**
  * Load all resources
  */
-module.exports = {
-  Status: require('./status'),
-  Live: require('./live'),
+import Status from './status.js'
+import Live from './live.js'
+
+export default {
+  Status,
+  Live,
 }

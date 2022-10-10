@@ -3,18 +3,19 @@
  * Main Node file
  */
 
-// ## Imports
-const http = require('http')
-const express = require('express')
-const bodyParser = require('body-parser')
-const morgan = require('morgan')
-const Resource = require('./resources')
-const winston = require('winston')
-const sockjs = require('sockjs')
-const { PassThrough } = require('stream')
-const fs = require('fs')
-const util = require('util')
-const args = require('minimist')(process.argv.slice(2))
+import http from 'node:http'
+import express from 'express'
+import bodyParser from 'body-parser'
+import morgan from 'morgan'
+import Resource from './resources/index.js'
+import winston from 'winston'
+import sockjs from 'sockjs'
+import { PassThrough } from 'node:stream'
+import fs from 'node:fs'
+import util from 'node:util'
+import minimist from 'minimist'
+
+const args = minimist(process.argv.slice(2))
 
 /**
  * Close stdout and stderr and replace with handles to log files
@@ -102,7 +103,7 @@ app.use(
   )
 )
 app.use(bodyParser.text({ type: 'json' }))
-app.use(express.static(`${__dirname}/public`))
+app.use(express.static(`./public`))
 
 /**
  * Map routes to resource namespaces, pass along the Express app instance
@@ -154,9 +155,7 @@ server.on('close', function () {
   process.exit(0)
 })
 
-const sockJS = sockjs.createServer({
-  sockjs_url: 'https://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js',
-})
+const sockJS = sockjs.createServer()
 sockJS.on('connection', function (connection) {
   messageQueue.pipe(connection)
   connection.on('close', function () {})
@@ -182,4 +181,4 @@ process.on('SIGTERM', function () {
   server.close()
 })
 
-module.exports = app
+export default app

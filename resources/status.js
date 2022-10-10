@@ -4,14 +4,13 @@
  *	@copyright Notificare
  *	@version 0.1
  */
+import express from 'express'
 
-// Imports
-const express = require('express')
 /**
  * Constructor
  * @returns {Status}
  */
-module.exports = class Status {
+export default class Status {
   /**
    * Attach routes to main Express app
    * @param app {Express} The main app

@@ -32,41 +32,29 @@
   <body>
     <div id="console"></div>
   </body>
-  <script
-    type="text/javascript"
-    src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
-  ></script>
-  <script
-    type="text/javascript"
-    src="//cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"
-  ></script>
+  <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
   <script type="text/javascript">
-    var sockjs = new SockJS("/sockjs");
-    var div = $("#console");
+    const sockjs = new SockJS("/sockjs")
+    const div = $("#console");
     sockjs.onopen = function () {
-      div.append($("<p>").attr("class", "green").text("socket opened"));
+      div.append($("<p>").attr("class", "green").text("socket opened"))
     };
     sockjs.onclose = function () {
-      div.append($("<p>").attr("class", "red").text("socket closed"));
+      div.append($("<p>").attr("class", "red").text("socket closed"))
     };
     sockjs.onmessage = function (m) {
       try {
-        var message = JSON.parse(m.data);
-        var consoleEntry = $("<p>");
-        consoleEntry.append(
-          $("<span>")
-            .attr("class", "blue")
-            .text(new Date(message.timestamp).toISOString() + " ")
-        );
-        consoleEntry.append($("<span>").text(message.type));
+        const message = JSON.parse(m.data)
+        const consoleEntry = $("<p>")
+        consoleEntry.append($("<span>").attr("class", "blue").text(new Date(message.timestamp).toISOString() + " "))
+        consoleEntry.append($("<span>").text(message.type))
         if (message.data && message.data.userID) {
-          consoleEntry.append(
-            $("<span>").text(" by userID " + message.data.userID)
-          );
+          consoleEntry.append($("<span>").text(" by userID " + message.data.userID))
         }
-        div.append(consoleEntry);
+        div.append(consoleEntry)
       } catch (e) {
-        div.append($("<p>").attr("class", "red").text("invalid message"));
+        div.append($("<p>").attr("class", "red").text("invalid message"))
       }
     };
   </script>

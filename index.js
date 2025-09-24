@@ -5,7 +5,6 @@
 
 import http from 'node:http'
 import express from 'express'
-import bodyParser from 'body-parser'
 import morgan from 'morgan'
 import Resource from './resources/index.js'
 import winston from 'winston'
@@ -60,12 +59,12 @@ if (env === 'development') {
               (info) =>
                 `${info.timestamp} - ${info.level}: ${
                   info.message
-                } ${util.format(info.metadata)}`
-            )
+                } ${util.format(info.metadata)}`,
+            ),
           ),
         }),
       ],
-    })
+    }),
   )
 } else {
   /**
@@ -88,21 +87,21 @@ if (env === 'development') {
               (info) =>
                 `${info.timestamp} - ${info.level}: ${
                   info.message
-                } ${util.format(info.metadata)}`
-            )
+                } ${util.format(info.metadata)}`,
+            ),
           ),
         }),
       ],
-    })
+    }),
   )
 }
 
 app.use(
   morgan(
-    ':remote-addr - - [:date] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'
-  )
+    ':remote-addr - - [:date] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"',
+  ),
 )
-app.use(bodyParser.text({ type: 'json' }))
+app.use(express.json())
 app.use(express.static(`./public`))
 
 /**

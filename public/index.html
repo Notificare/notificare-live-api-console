@@ -24,6 +24,9 @@
       .blue {
         color: #0bc;
       }
+      .yellow {
+          color: #ff0;
+      }
       .red {
         color: #ff0096;
       }
@@ -47,10 +50,15 @@
       try {
         const message = JSON.parse(m.data)
         const consoleEntry = $("<p>")
-        consoleEntry.append($("<span>").attr("class", "blue").text(new Date(message.timestamp).toISOString() + " "))
-        consoleEntry.append($("<span>").text(message.type))
-        if (message.data && message.data.userID) {
-          consoleEntry.append($("<span>").text(" by userID " + message.data.userID))
+        consoleEntry.append($("<span>").attr("class", "blue").text(new Date(message.body.timestamp).toISOString() + " "))
+        consoleEntry.append($("<span>").attr("class", "yellow").text(message.headers.applicationId + " "))
+        if (message.headers.licenceId) {
+          consoleEntry.append($("<span>").attr("class", "yellow").text(message.headers.licenceId + " "))
+        }
+        consoleEntry.append($("<span>").attr("class", "yellow").text(message.headers.label + " "))
+        consoleEntry.append($("<span>").text(message.body.type))
+        if (message.body.data && message.body.data.userID) {
+          consoleEntry.append($("<span>").text(" by userID " + message.body.data.userID))
         }
         div.append(consoleEntry)
       } catch (e) {

@@ -25,7 +25,7 @@ export default class Live {
     const liveApiConfig = app.get('liveApiConfig')
     this.httpGateway = new LiveApi(
       liveApiConfig.privateKey,
-      liveApiConfig.publicKey
+      liveApiConfig.publicKey,
     ).httpGateway
 
     return express
@@ -53,13 +53,22 @@ export default class Live {
         if (
           !this.httpGateway.validate(
             request.header('x-notificare-public-key'),
-            request.body,
-            request.header('x-notificare-signature')
+            JSON.stringify(request.body),
+            request.header('x-notificare-signature'),
           )
         ) {
           response.status(400).send({ error: 'invalid signature' })
         } else {
-          this.app.get('messageQueue').write(request.body)
+          this.app.get('messageQueue').write(
+            JSON.stringify({
+              headers: {
+                applicationId: request.header('x-notificare-application-id'),
+                label: request.header('x-notificare-label'),
+                licenceId: request.header('x-notificare-licence-id'),
+              },
+              body: request.body,
+            }),
+          )
           response.status(200).send({ message: 'message received' })
         }
       } catch (err) {
@@ -89,8 +98,8 @@ export default class Live {
           .send(
             this.httpGateway.verify(
               request.header('x-notificare-public-key'),
-              request.query.challenge
-            )
+              request.query.challenge,
+            ),
           )
       } catch (err) {
         response.status(400).send({ error: err.message })
